@@ -220,6 +220,7 @@ body{
   background:
     radial-gradient(120% 100% at 50% 15%, #5a0923 0%, #3d0317 55%, #24010d 100%);
   color:#fff;
+  isolation:isolate;
 }
 .blob{
   position:absolute; border-radius:50%;
@@ -291,14 +292,7 @@ body{
 }
 
 .wishPhoto__heart{
-  position:absolute;
-  top:52%; left:50%;
-  transform:translate(-50%, -50%);
-  width:clamp(38px, 10vw, 64px);
-  height:clamp(38px, 10vw, 64px);
-  filter:drop-shadow(0 2px 8px rgba(255, 157, 196, 0.7));
-  pointer-events:none;
-  z-index:2;
+  display:none;
 }
 
 .goldFrameOverlay{
