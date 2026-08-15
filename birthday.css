@@ -66,6 +66,14 @@ body{
   z-index:3;
   overflow:hidden;
 }
+.hero[style*="visibility: hidden"],
+.hero[style*="display: none"],
+.hero.is-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 /* the warm field the heart sits on */
 .hero__bg{
   position:absolute; inset:0;

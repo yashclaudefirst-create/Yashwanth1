@@ -696,7 +696,7 @@ function buildFilm(m){
    .to(target, { opacity: 0, duration: 0.12, ease: 'power1.out' }, 1.06);
 
   t.set(field, { autoAlpha: 1 }, 1.32)
-   .set(hero, { autoAlpha: 0 }, 1.33)
+   .set(hero, { autoAlpha: 0, display: 'none' }, 1.33)
    .to('.blob', { opacity: 1, duration: 0.6, ease: 'power2.out' }, 1.34)
    .set(flood, { autoAlpha: 0 }, 1.36);
 
@@ -779,7 +779,7 @@ archery.addEventListener('keydown', (e) => {
 });
 
 function enter(){
-  gsap.set(hero, { autoAlpha: 1 });
+  gsap.set(hero, { autoAlpha: 1, display: 'block' });
   refreshRig();
   setDraw(0);
   gsap.set([eyebrow, hint], { opacity: 0, y: 14 });
