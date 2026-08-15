@@ -40,12 +40,10 @@ const flood   = $('flood');
 const field   = $('field');
 const camera  = $('camera');
 const fgrid   = $('fgrid');
-const kEyebrow= $('kEyebrow');
 const kSub    = $('kSub');
 const kName   = $('kName');
 const barTop  = $('barTop');
 const barBot  = $('barBot');
-const uline   = $('uline').querySelector('.uline__path');
 const bloom   = $('bloom');
 const replay  = $('replay');
 
@@ -71,9 +69,9 @@ const treeBloomPlayer = new FrameSequencePlayer({
   crossfade: true,
 });
 
-// Preload both frame sequences immediately
-photoRevealPlayer.preload();
-treeBloomPlayer.preload();
+// Preload both frame sequences immediately with explicit logging for diagnostics
+photoRevealPlayer.preload().catch((err) => console.error('photoRevealPlayer preload error:', err));
+treeBloomPlayer.preload().catch((err) => console.error('treeBloomPlayer preload error:', err));
 
 /* --- cue log for the recorder --- */
 if (isRecord) window.bdayCues = [];
@@ -96,14 +94,18 @@ function treeStart(){
   window.bdayDone = false;
   cue('grow');
 
-  // Play tree bloom sequence (~3.5s overall duration)
-  treeBloomPlayer.play(3.5, () => {
-    window.bdayDone = true;
-    if (!replayArmed) {
-      replayArmed = true;
-      armReplay();
-    }
-  });
+  try {
+    // Play tree bloom sequence (~3.5s overall duration)
+    treeBloomPlayer.play(3.5, () => {
+      window.bdayDone = true;
+      if (!replayArmed) {
+        replayArmed = true;
+        armReplay();
+      }
+    });
+  } catch (err) {
+    console.error('Error during treeStart playing treeBloomPlayer:', err);
+  }
 
   // Reveal wish text
   gsap.delayedCall(0.45, () => showWish(true));
@@ -125,21 +127,6 @@ function drawFinal(){
    ACTS 1–3 (GSAP) — the bow, the shot, the wish
    ============================================================ */
 
-/* the two headline words become per-glyph spans so each hinges up on its own */
-function splitWord(el){
-  const chars = [...el.textContent];
-  el.textContent = '';
-  return chars.map((c) => {
-    const s = document.createElement('span');
-    s.className = 'hl__ch';
-    s.textContent = c === ' ' ? ' ' : c;
-    el.appendChild(s);
-    return s;
-  });
-}
-const line1Chars = splitWord($('wLine1'));
-const line2Chars = splitWord($('wLine2'));
-const kChars = [...line1Chars, ...line2Chars];
 
 /* drifting light motes behind the scene */
 function buildMotes(){
@@ -299,11 +286,8 @@ function buildFilm(m){
    .set(fgrid, { xPercent: 0, yPercent: 0 })
    .set(barTop, { yPercent: -100 })
    .set(barBot, { yPercent: 100 })
-   .set(kEyebrow, { opacity: 0, y: 12 })
    .set(kSub, { opacity: 0, y: 12 })
-   .set(kName, { opacity: 0, y: 12 })
-   .set(kChars, { transformPerspective: 620, transformOrigin: '50% 100%', yPercent: 135, rotationX: -82 })
-   .set(uline, { drawn: 0 });
+   .set(kName, { opacity: 0, y: 12 });
 
   // --- shot ---
   t.fromTo(nockProxy, { val: m.drawnNock }, { val: REST_NOCK, duration: 0.5, ease: 'elastic.out(1,0.34)', onUpdate: applyNock }, 0)
@@ -353,13 +337,9 @@ function buildFilm(m){
     photoRevealPlayer.play(0.85);
   }, null, 1.54);
 
-  // --- kinetic wish ---
-  t.to(kEyebrow, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, 1.54)
-   .to(line1Chars, { yPercent: 0, rotationX: 0, duration: 0.55, ease: 'power3.out', stagger: 0.033 }, 1.68)
-   .to(line2Chars, { yPercent: 0, rotationX: 0, duration: 0.55, ease: 'power3.out', stagger: 0.033 }, 2.06)
-   .to(uline, { drawn: 1, duration: 0.45, ease: 'power2.inOut' }, 2.54)
-   .to(kSub, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, 2.74)
-   .to(kName, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 2.94);
+  // --- wish text reveal ---
+  t.to(kSub, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 2.06)
+   .to(kName, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, 2.45);
 
   // --- bloom ---
   t.to(barTop, { yPercent: -100, duration: 0.5, ease: 'power2.in' }, 3.32)
