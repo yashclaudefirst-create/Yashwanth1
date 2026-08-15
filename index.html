@@ -18,8 +18,9 @@
 <body>
   <main class="scene">
 
-    <!-- The tree world (Act 4). One canvas playing the tree-bloom frame sequence. -->
-    <canvas id="treeBloom" class="tree" aria-label="A blossom tree grows and blooms into a heart made of petals" role="img"></canvas>
+    <!-- The tree world (Act 4). One canvas; it stays transparent until the
+         intro hands off, then it draws its own warm sky + blossom tree. -->
+    <canvas id="tree" class="tree" aria-label="A blossom tree grows and blooms into a heart made of petals" role="img"></canvas>
 
     <!-- ACT 1 — THE INVITATION ------------------------------------------------
          A single beating heart on a warm field. It is the only thing the
@@ -177,7 +178,7 @@
       <div class="camera" id="camera">
         <div class="frameContainer" id="frameContainer">
           <div class="wishPhoto" id="wishPhoto">
-            <canvas id="photoReveal" class="photo-reveal" aria-hidden="true"></canvas>
+            <img src="./photo_reveal.png" class="photo-reveal" alt="Photo" />
             <svg class="wishPhoto__heart" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="none" stroke="#ff9dc4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
