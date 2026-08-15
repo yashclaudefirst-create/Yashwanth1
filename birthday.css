@@ -254,48 +254,57 @@ body{
 /* the camera — everything on the flood rides a slow continuous push */
 .camera{
   position:absolute; inset:0;
-  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  display:flex; flex-direction:column; justify-content:space-between; align-items:center;
   gap:clamp(4px,1.2vh,12px);
-  padding:0 6vw; text-align:center;
+  padding:clamp(24px, 5vh, 48px) 6vw clamp(32px, 6vh, 64px); text-align:center;
   will-change:transform;
+  z-index:3;
+}
+.camera::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:30vh;
+  background:linear-gradient(180deg, rgba(20,4,10,0.65) 0%, rgba(20,4,10,0) 100%);
+  pointer-events:none; z-index:1;
+}
+.camera::after{
+  content:""; position:absolute; bottom:0; left:0; right:0; height:50vh;
+  background:linear-gradient(0deg, rgba(20,4,10,0.7) 0%, rgba(20,4,10,0.35) 60%, rgba(20,4,10,0) 100%);
+  pointer-events:none; z-index:1;
+}
+
+.camera__bottom{
+  position:relative;
+  z-index:2;
+  display:flex; flex-direction:column; align-items:center;
+  gap:clamp(4px,1.2vh,12px);
 }
 
 .wishPhoto{
-  position:relative;
-  display:inline-block;
-  margin-bottom:clamp(4px, 1vh, 12px);
-  padding:8px;
-  background:rgba(255,255,255,0.06);
-  border-radius:12px;
-  box-shadow:0 8px 32px rgba(60,4,24,0.35);
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  z-index:0;
+  margin:0; padding:0;
+  background:transparent;
+  border-radius:0;
+  box-shadow:none;
 }
 .wishPhoto__corner{
-  position:absolute;
-  width:16px;
-  height:16px;
-  border-color:var(--gold-1);
-  border-style:solid;
-  pointer-events:none;
+  display:none;
 }
-.wishPhoto__corner--tl{ top:4px; left:4px; border-width:2px 0 0 2px; }
-.wishPhoto__corner--tr{ top:4px; right:4px; border-width:2px 2px 0 0; }
-.wishPhoto__corner--bl{ bottom:4px; left:4px; border-width:0 0 2px 2px; }
-.wishPhoto__corner--br{ bottom:4px; right:4px; border-width:0 2px 2px 0; }
 .wishPhoto__heart{
   position:absolute;
-  top:-12px; right:-10px;
-  width:28px; height:28px;
-  filter:drop-shadow(0 2px 6px rgba(212,35,92,0.5));
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  width:clamp(36px, 8vw, 64px); height:clamp(36px, 8vw, 64px);
+  filter:drop-shadow(0 2px 8px rgba(212,35,92,0.6));
   pointer-events:none;
   z-index:2;
 }
 .photo-reveal{
-  width:min(70vw, 380px);
-  aspect-ratio:720/1146;
-  max-height:65vh;
-  object-fit:contain;
+  width:100%;
+  height:100%;
+  object-fit:cover;
   display:block;
-  filter:drop-shadow(0 8px 24px rgba(60,4,24,.28));
+  filter:none;
 }
 .kName{
   font-family:"Great Vibes", cursive;
@@ -307,6 +316,7 @@ body{
   transform:translateY(10px);
 }
 .kEyebrow{
+  position:relative; z-index:2;
   font-family:"Cormorant Garamond", Georgia, serif;
   font-style:italic; font-weight:500;
   font-size:clamp(15px, 3.6vw, 27px);
