@@ -259,6 +259,16 @@ body{
   padding:0 6vw; text-align:center;
   will-change:transform;
 }
+
+.photo-reveal{
+  width:min(70vw, 380px);
+  aspect-ratio:720/1146;
+  max-height:65vh;
+  object-fit:contain;
+  display:block;
+  margin-bottom:clamp(4px, 1vh, 12px);
+  filter:drop-shadow(0 8px 24px rgba(60,4,24,.28));
+}
 .kEyebrow{
   font-family:"Cormorant Garamond", Georgia, serif;
   font-style:italic; font-weight:500;
